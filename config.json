@@ -1,0 +1,6 @@
+{
+    "basestation_port": 10000,
+    "gps_port": 10001,
+    "control_port": 10002,
+    "enable_log": "true"
+}
