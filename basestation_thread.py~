@@ -41,9 +41,7 @@ class BaseStationThread(threading.Thread):
             server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server.bind(('0.0.0.0', self.base_station_port))
             server.listen(1)
-            #server.settimeout(3)    # timeout: 3s
-            conn, address = server.accept()
-            conn.settimeout(3)
+            server.settimeout(3)    # timeout: 3s
             while self.running:
                 try:
                     data = conn.recv(BUFFER_SIZE)

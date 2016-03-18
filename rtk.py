@@ -28,6 +28,7 @@ class Rtk:
             data: 收到的数据包
             rcv_count: 收到的数据包的编号
         """
+        print ('Got a message')
         self.dispatcher.data_queue.put((data, rcv_count))
 
     def got_client_cb(self, client_socket, address):
