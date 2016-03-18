@@ -48,7 +48,10 @@ class BaseStationThread(threading.Thread):
                 try:
                     data = conn.recv(BUFFER_SIZE)
                     if len(data) == 0:
-                        raise RuntimeError('socket connection broken')
+                        #raise RuntimeError('socket connection broken')
+                        #conn.close()
+                        conn, address = server.accept()
+                        conn.settimeout(3)
                     self.recv_count += 1
                     log.debug('rcv %d bytes. id: %d' % (len(data), self.recv_count))
                     self.got_data_cb(data, self.recv_count)
