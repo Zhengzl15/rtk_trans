@@ -28,7 +28,7 @@ class Rtk:
             data: 收到的数据包
             rcv_count: 收到的数据包的编号
         """
-        print ('Got a message')
+        print ('Got a message: %s' %data)
         self.dispatcher.data_queue.put((data, rcv_count))
 
     def got_client_cb(self, client_socket, address):
@@ -86,7 +86,7 @@ class Rtk:
             print("enter 'q' to quit")
             while input() != 'q':
                 print("enter 'q' to quit. rcv count: %d, client count: %d"
-                      % (self.basestation_server.rcv_count, len(self.dispatcher.clients)))
+                      % (self.basestation_server.recv_count, len(self.dispatcher.clients)))
                 if not self.basestation_server.running or not self.gps_server.running:
                     break
         except KeyboardInterrupt:
