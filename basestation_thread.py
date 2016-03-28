@@ -31,6 +31,10 @@ class BaseStationThread(threading.Thread):
         self.running = True
 
     def run(self):
+        while self.running:
+            self.run_main()
+
+    def run_main(self):
         """线程主函数
 
         循环运行，接受新的客户端的连接。
