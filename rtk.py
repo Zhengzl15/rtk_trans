@@ -11,7 +11,8 @@ import log
 from control_thread import ControlThread
 from dispatcher_thread import DispatcherThread
 from gps_thread import GPSThread
-from basestation_thread import BaseStationThread
+from basestation_thread import *
+import threading
 
 
 class Rtk:
@@ -71,12 +72,16 @@ class Rtk:
         log.info('Main: start')
 
         # threads
-        self.basestation_server = BaseStationThread(configs['basestation_port'], self.got_data_cb)
+        self.basestation_server = BaseStationThread(('localhost', configs['basestation_port']), BaseStationHandler(self.got_data_cb))
+        server_thread = threading.Thread(target=self.basestation_server.serve_forever)
+        server_thread.setDaemon(True)
+        server_thread.start()
+        self.basestation_server.serve_forever()
         self.controller = ControlThread(configs['control_port'], self.got_command_cb)
         self.dispatcher = DispatcherThread()
         self.gps_server = GPSThread(configs['gps_port'], self.got_client_cb)
 
-        self.basestation_server.start()
+        #self.basestation_server.start()
         self.controller.start()
         self.dispatcher.start()
         self.gps_server.start()
@@ -96,7 +101,7 @@ class Rtk:
         self.controller.running = False
         self.controller.join()
         self.basestation_server.running = False
-        self.basestation_server.join()
+        #self.basestation_server.join()
         self.gps_server.running = False
         self.gps_server.join()
         self.dispatcher.running = False
